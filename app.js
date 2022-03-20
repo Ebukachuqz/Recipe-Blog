@@ -1,8 +1,13 @@
 require('dotenv').config()
 require('express-async-errors')
+
+// Express imports
 const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
+
+// DB
+const connectDB = require('./server/db/connectDB')
 
 
 app.use(express.urlencoded({ extended: true }))
@@ -17,4 +22,10 @@ app.use('/', recipeRoutes)
 
 
 const port = process.env.PORT || 4000
-app.listen(port, ()=>console.log(`App is listening on port ${port}`))
+
+const startApp = async () => {
+    await connectDB(process.env.MONGO_URI)
+    app.listen(port, ()=>console.log(`App is listening on port ${port}`))
+}
+
+startApp()

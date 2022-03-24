@@ -44,3 +44,8 @@ body{
   object-fit: cover;
 }
 
+.sub-heading{
+  width: 100%;
+  border-bottom: 2px black solid;
+  
+}

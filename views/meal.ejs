@@ -1,0 +1,38 @@
+<% if(meal != null ) { %>
+  <nav aria-label="breadcrumb" class="mt-2">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+      <li class="breadcrumb-item"><a href="/#categories" class="text-decoration-none">Categories</a></li>
+      <li class="breadcrumb-item"><a href="/categories/<%- meal.Category %>" class="text-decoration-none"><%- meal.Category %></a></li>
+      <li class="breadcrumb-item active" aria-current="page"><%- meal.mealName %></li>
+    </ol>
+  </nav>
+
+  <div class="row mb-3">
+    <div class="col-12 col-md-4">
+      <img src="<%- meal.MealImage %>" class="img-fluid sticky-top" style="top: 20px;" alt="<%- meal.mealName %>" loading="lazy">
+    </div>
+    <div class="col-12 col-md-8">
+      <div class="row">
+        <div class="col-12"><h1><%- meal.mealName %></h1></div>
+        <div class="col-12 mb-4"><i class="bi bi-geo-alt-fill"></i></i> <%- meal.Area %></div>
+        <div class="col-12" style="white-space: pre-line;">
+          <h4>Cooking Instructions</h4>
+          <%- meal.Instruction %>
+        </div>
+      </div>
+      <div class="row pt-4">
+        <div class="col-12">
+          <h4>Ingredients</h4>
+          <ul class="list-group list-group-flush">
+            <% meal.Ingredients.forEach(ingredients => { %>
+              <li class="list-group-item"><%= ingredients %></li>
+            <% }) %>
+          </ul> 
+        </div>
+      </div>
+    </div>
+  </div>
+<% } else { %>
+  <p>No item found.</p>
+<% } %>

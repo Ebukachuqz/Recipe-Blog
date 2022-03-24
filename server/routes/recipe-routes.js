@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {homepage} = require('../controllers/recipe-controllers')
+const {homepage} = require('../controllers/Homepage')
 
 
 

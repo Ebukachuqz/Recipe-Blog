@@ -1,0 +1,39 @@
+<!-- Category Info Section -->
+  <nav aria-label="breadcrumb" class="mt-2">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+      <li class="breadcrumb-item"><a href="/#categories" class="text-decoration-none">Categories</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= catInfo.strCategory %></li>
+    </ol>
+  </nav>
+
+    <div class="card mb-3 mt-3" style="max-width: 100%; background-color: transparent; border: none;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="<%= catInfo.strCategoryThumb %>" class="img-fluid rounded-start" alt="<%= catInfo.strCategory %>">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h2 class="card-title"><%= catInfo.strCategory %></h2>
+                    <p class="card-text"><%= catInfo.strCategoryDescription %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meals in category -->
+    <h4 class="sub-heading"><%= catInfo.strCategory %> Meal(s)</h4>
+    <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
+    <% if(categoryMeals != '') { %>
+      <% categoryMeals.forEach(meal => { %>
+        <div class="col text-center category__link">
+          <a href="/categories/<%= catInfo.strCategory %>/<%= meal.idMeal %>/<%= meal.strMeal.replace(/\s/g, '_') %>" class="text-deco">
+            <div class="category__img shadow" style="height: 150px;">
+              <img src="<%= meal.strMealThumb %>" alt="<%= meal.strMeal %>">
+            </div>
+            <div class="pt-1"><b><%= meal.strMeal %></b></div>
+          </a>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>

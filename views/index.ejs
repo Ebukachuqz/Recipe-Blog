@@ -56,20 +56,20 @@
 
 
   <!-- Categories -->
-<section class="pb-4 pt-4">
+<section class="pb-4 pt-4" id="categories">
   <div class="d-flex mb-2 align-items-center">
     <h3>Categories</h3>
-    <a href="/explore-latest" class="ms-auto text-deco">View More</a>
+    <a href="/categories" class="ms-auto text-deco">View More</a>
   </div>
 
   <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
 
     <% if(categories != '') { %>
-      <% categories.slice(0,6).forEach(category => { %>
+      <% categories.forEach(category => { %>
         <div class="col text-center category__link">
-          <a href="/categories/<%- category.name %>" class="text-deco">
+          <a href="/categories/<%- category.strCategory %>" class="text-deco">
             <div class="category__img shadow">
-              <img src="<%= category.strCategoryThumb %>" alt="<% category.strCategory %>">
+              <img src="<%= category.strCategoryThumb %>" alt="<%= category.strCategory %>">
             </div>
             <div class="pt-1"><b><%= category.strCategory %></b></div>
           </a>

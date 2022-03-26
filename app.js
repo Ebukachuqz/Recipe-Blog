@@ -1,21 +1,46 @@
 require('dotenv').config()
 require('express-async-errors')
 
-// Express imports
+// imports
 const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
 
-// DB
-const connectDB = require('./server/db/connectDB')
+const errorHandler = require('./server/middleware/error-handler')
+const notFound = require("./server/middleware/notFound");
 
+const session = require('express-session')
+const cookieParser = require('cookie-parser')
+const flash = require('connect-flash')
+const passport = require('passport')
+const initializePassport = require('./server/utils/passport-config')
+const methodOverride = require('method-override')
 
-app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 app.use(expressLayouts)
+app.use(express.urlencoded({ extended: true }))
 
-app.set('layout', './layout/main')
-app.set('view engine', 'ejs')
+initializePassport(passport)
+
+
+app.use(session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
+//  check for current user
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+})
+
+app.use(methodOverride('_method'))
+
+// DB
+const connectDB = require('./server/db/connectDB')
 
 // Routes
 const recipeRoutes = require('./server/routes/recipe-routes')
@@ -26,10 +51,10 @@ app.use('/', recipeRoutes)
 app.use("/", usersAuthRoutes);
 app.use('/categories', categoryRoutes)
 
-// Middleware
-const errorHandler = require('./server/middleware/error-handler')
-const notFound = require("./server/middleware/notFound");
+// Middlewares
 
+app.set('layout', './layout/main')
+app.set('view engine', 'ejs')
 
 app.use(errorHandler)
 app.use(notFound);

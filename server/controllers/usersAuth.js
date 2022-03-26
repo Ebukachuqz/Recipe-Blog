@@ -1,4 +1,3 @@
-const { StatusCodes } = require("http-status-codes");
 const User = require("../models/User");
 
 
@@ -11,13 +10,22 @@ const registerUser = async (req, res) => {
     res.redirect('/login')
 };
 
+const loginUser = (passport) => {
+    return passport.authenticate('local', {
+        successRedirect: "/dashboard",
+        failureRedirect: "/login"
+    })
+}
 
-const loginUser = async (req, res) => {
-
+const logoutUser = (req, res) => {
+    req.logout()
+    res.redirect('/')
 }
 
 module.exports = {
     getLoginPage,
     getRegisterPage,
-    registerUser
+    registerUser,
+    loginUser,
+    logoutUser
 }

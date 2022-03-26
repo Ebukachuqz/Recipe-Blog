@@ -8,11 +8,17 @@ const homepage = async (req, res) => {
       "https://www.themealdb.com/api/json/v1/1/categories.php"
     );
 
-    const categories = catReq.data.categories
+  const categories = catReq.data.categories
+  res.render('index', { title: 'Homepage', categories })
+}
 
-    res.render('index', {title:'Homepage', categories})
+
+const dashboard = async (req, res) => {
+
+    res.send({user: req.user})
 }
 
 module.exports = {
     homepage,
+    dashboard
 }

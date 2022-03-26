@@ -1,9 +1,17 @@
-const express = require('express')
-const { getLoginPage, getRegisterPage, registerUser } = require('../controllers/usersAuth')
-const router = express.Router()
+const express = require("express");
+const {
+  getLoginPage,
+  getRegisterPage,
+  registerUser,
+  loginUser,
+  logoutUser,
+} = require("../controllers/usersAuth");
+const { isLoggedIn } = require("../middleware/authUser");
+const router = express.Router();
+const passport = require("passport");
 
+router.route("/login").get(isLoggedIn, getLoginPage).post(loginUser(passport));
+router.route("/register").get(isLoggedIn, getRegisterPage).post(registerUser);
+router.route("/logout").delete(logoutUser);
 
-router.route('/login').get(getLoginPage).post()
-router.route('/register').get(getRegisterPage).post(registerUser)
-
-module.exports = router
+module.exports = router;

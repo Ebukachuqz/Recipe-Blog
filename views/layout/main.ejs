@@ -16,6 +16,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/style.css">
     <title><%= typeof title != 'undefined'? `Recipe Blog - ${title}` : "Cooking Recipe Blog" %></title>
+    <link rel="icon" type="image/x-icon" href="/img/logo.svg">
 </head>
 <body>
     <div class="container mainbody">
@@ -30,8 +31,17 @@
                 <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
             </ul>
             <ul class="nav">
-                <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">Login</a></li>
-                <li class="nav-item"><a href="/register" class="nav-link link-dark px-2">Sign up</a></li>
+                <% if (currentUser) { %>
+                    <li class="nav-item"><a href="/dashboard" class="nav-link link-dark px-2">DashBoard</a></li>
+                    <li class="nav-item">
+                        <form action="/logout?_method=DELETE" method="post">
+                            <button type="submit" class="nav-link btn btn-link link-dark px-2">Logout</button>
+                        </form>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item"><a href="/login" class="nav-link link-dark px-2">Login</a></li>
+                    <li class="nav-item"><a href="/register" class="nav-link link-dark px-2">Sign up</a></li>
+                <% } %>
             </ul>
             </div>
         </nav>

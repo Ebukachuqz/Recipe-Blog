@@ -20,7 +20,7 @@
 
                   <div class="d-flex flex-row align-items-center mb-4">
                     <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="username" name="username" class="form-control" placeholder="What should we call you" value="<%= typeof name != 'undefined' ? name : '' %>" required/>
+                      <input type="text" id="username" name="username" minlength="3" maxlength="20" class="form-control" placeholder="What should we call you" value="<%= typeof name != 'undefined' ? name : '' %>" required/>
                       <label class="form-label" for="username">UserName</label>
                     </div>
                   </div>

@@ -12,8 +12,8 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         unique: true,
         required: [true, 'Please provide Username'],
-        minlength: [3, 'Minimum Characters should be 3'],
-        maxlength: [20, 'Maximum Characters should be 20']
+        minlength: [3, 'Username should be at least 3 characters'],
+        maxlength: [20, 'Username should be at most 20 characters']
     },
 
     email: {
@@ -37,5 +37,10 @@ UserSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
 })
+
+UserSchema.methods.comparePassword = async function (inputPassword) {
+    const isMatch = await bcrypt.compare(inputPassword, this.password)
+    return isMatch
+}
 
 module.exports = mongoose.model('User', UserSchema)

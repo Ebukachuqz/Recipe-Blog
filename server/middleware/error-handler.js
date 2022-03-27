@@ -17,8 +17,10 @@ const errorHandler = (err, req, res, next) => {
       customError.statusCode = 400;
     }
     if (err.code && err.code === 11000) {
-      customError.message = `${Object.keys(err.keyValue)} already exists, please choose another value`;
+      customError.message = `The ${Object.keys(err.keyValue)} already exists, please pick another.`;
       customError.statusCode = 400;
+      req.flash('error_flash', customError.message)
+      return res.redirect('/register')
     }
     if (err.name === "CastError") {
       customError.message = `No item found with id : ${err.value}`;

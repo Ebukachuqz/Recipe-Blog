@@ -7,13 +7,15 @@ const getRegisterPage = (req, res) => res.render("register");
 
 const registerUser = async (req, res) => {
     const user = await User.create({ ...req.body });
+    req.flash('success_flash', 'You have successfully registered, you can login now.')
     res.redirect('/login')
 };
 
 const loginUser = (passport) => {
     return passport.authenticate('local', {
         successRedirect: "/dashboard",
-        failureRedirect: "/login"
+        failureRedirect: "/login",
+        failureFlash: true,
     })
 }
 

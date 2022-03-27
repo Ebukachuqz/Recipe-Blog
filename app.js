@@ -31,7 +31,16 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-//  check for current user
+// flash
+app.use(flash())
+app.use((req, res, next) => {
+    res.locals.success_flash = req.flash('success_flash')
+    res.locals.error_flash = req.flash("error_flash");
+    res.locals.error = req.flash("error");
+    next()
+})
+
+//  Save current user in session
 app.use(function (req, res, next) {
     res.locals.currentUser = req.user;
     next();

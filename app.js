@@ -15,10 +15,13 @@ const flash = require('connect-flash')
 const passport = require('passport')
 const initializePassport = require('./server/utils/passport-config')
 const methodOverride = require('method-override')
+const fileUpload = require('express-fileupload')
 
 app.use(express.static('public'))
 app.use(expressLayouts)
 app.use(express.urlencoded({ extended: true }))
+
+app.use(fileUpload())
 
 initializePassport(passport)
 

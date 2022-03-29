@@ -1,7 +1,7 @@
 const axios = require('axios')
 const path = require('path')
-const ServerError = require('../errors/ServerError');
 const Meal = require('../models/Meal');
+const User = require('../models/User')
 
 
 const homepage = async (req, res) => {
@@ -11,12 +11,16 @@ const homepage = async (req, res) => {
     );
 
   const categories = catReq.data.categories
-  res.render('index', { title: 'Homepage', categories })
+  const meals = await Meal.find({}).sort({_id: -1}).limit(6)
+  res.render('index', { title: 'Homepage', categories, meals })
 }
 
 
 const dashboard = async (req, res) => {
-    res.send({user: req.user})
+    const userID = req.user._id
+    const user = await User.findById(userID).select('-password')
+    const userMeals = await Meal.find({createdBy: user._id})
+    res.render('dashboard', {user, userMeals})
 }
 
 const getSubmitRecipe = (req, res) => res.render('submit-recipe')
@@ -53,8 +57,8 @@ const submitRecipe = async (req, res) => {
   }
 
   meal = await Meal.create(meal)
-  // req.flash('Meal was submitted successfully')
-  return res.send(meal)
+  req.flash('success_flash', 'Meal was submitted successfully')
+  return res.redirect('dashboard')
 }
 
 module.exports = {

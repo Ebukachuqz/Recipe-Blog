@@ -1,0 +1,35 @@
+<div class="container mt-4">
+    <div class="d-flex flex-row justify-content-start mb-4">
+        <div class="rounded mx-3">
+            <img src="/img/default-dp.jpg" width="150px" alt="Profile Picture" />
+        </div>
+        <div class="d-flex flex-column">
+            <h3><%= user.name %></h3>
+            <h4><i class="bi bi-person-circle"></i>  <%= user.username %></h3>
+            <p><i class="bi bi-envelope"></i> <%= user.email %></p>
+            <p><i class="bi bi-caret-right-square-fill"></i> No. of Recipes: <%= userMeals.length %></p>
+        </div>
+    </div>
+
+
+    <h2 class="sub-heading">Your Meal(s)</h2>
+    <%- include('./partials/flash-msg.ejs') %>
+    <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
+    <% if(userMeals != '') { %>
+      <% userMeals.forEach(meal => { %>
+        <div class="col text-center category__link">
+          <a href="" class="text-deco">
+            <div class="category__img shadow" style="height: 150px;">
+              <img src="/uploads/<%= meal.image %>" alt="<%= meal.mealName %>">
+            </div>
+            <div class="pt-1"><b><%= meal.mealName %></b></div>
+          </a>
+        </div>
+      <% }) %>
+    <% } else { %>
+        <h2>No Meals Yet</h2>
+    <% } %>
+  </div>
+
+
+</div>

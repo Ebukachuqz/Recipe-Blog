@@ -1,4 +1,5 @@
-const axios = require('axios')
+const axios = require('axios');
+const ServerError = require('../errors/ServerError')
 const path = require('path')
 const Meal = require('../models/Meal');
 const User = require('../models/User')
@@ -61,9 +62,33 @@ const submitRecipe = async (req, res) => {
   return res.redirect('dashboard')
 }
 
+
+const search = async (req, res) => {
+  let searchtext = req.body.searchtext
+  // remove whitespace
+  searchtext = searchtext.trim()
+  searchtext = searchtext.replace(/\s/g, " ");
+
+  // search in db first
+  const dbMeals = await Meal.find({$text: { $search: searchtext }})
+
+  // search Api
+  let apiMeals = await axios.get(
+    `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchtext}`
+  );
+
+  if (apiMeals.status != 200) {
+    throw new ServerError('Oops! We have a problem. Try again later')
+  }
+  apiMeals = apiMeals.data.meals
+
+  res.render('search', { apiMeals, dbMeals, searchtext })
+}
+
 module.exports = {
     homepage,
     dashboard,
     getSubmitRecipe,
-    submitRecipe
+  submitRecipe,
+    search
 }

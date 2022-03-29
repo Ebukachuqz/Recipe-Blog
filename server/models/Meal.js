@@ -34,7 +34,7 @@ const MealSchema = new mongoose.Schema({
 },
     { timestamps: true });
 
-
+MealSchema.index({mealName: 'text', category: 'text'})
 
 
 module.exports = mongoose.model('Meal', MealSchema)

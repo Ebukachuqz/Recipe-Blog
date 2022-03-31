@@ -91,7 +91,7 @@
     <% meals.forEach(meal => { %>
       <div class="col text-center category__link">
         <a href="/user/meal/<%- meal.mealName %>" class="text-deco">
-          <div class="category__img shadow">
+           <div class="category__img shadow">
             <img src="/uploads/<%= meal.image %>" alt="<%= meal.mealName %>">
           </div>
           <div class="pt-1"><b><%= meal.mealName %></b></div>

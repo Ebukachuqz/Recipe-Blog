@@ -14,6 +14,7 @@ const cookieParser = require('cookie-parser')
 const flash = require('connect-flash')
 const passport = require('passport')
 const initializePassport = require('./server/utils/passport-config')
+const initializeGooglePassport = require('./server/utils/google-passport-config')
 const methodOverride = require('method-override')
 const fileUpload = require('express-fileupload')
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(fileUpload())
 
 initializePassport(passport)
+initializeGooglePassport(passport)
 
 
 app.use(session({

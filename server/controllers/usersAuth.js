@@ -24,10 +24,24 @@ const logoutUser = (req, res) => {
     res.redirect('/')
 }
 
+const googleSignin = (passport) => {
+    return passport.authenticate("google", { scope: ["email", "profile"] });
+}
+
+const googleSigninCallback = (passport) => {
+    return passport.authenticate("google", {
+        successRedirect: "/dashboard",
+        failureRedirect: "/login",
+        failureFlash: true,
+    });
+}
+
 module.exports = {
     getLoginPage,
     getRegisterPage,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    googleSignin,
+    googleSigninCallback,
 }

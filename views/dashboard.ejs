@@ -14,8 +14,8 @@
 
     <h2 class="sub-heading">Your Meal(s)</h2>
     <%- include('./partials/flash-msg.ejs') %>
-    <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
     <% if(userMeals != '') { %>
+    <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
       <% userMeals.forEach(meal => { %>
         <div class="col text-center category__link">
           <a href="" class="text-deco">
@@ -26,10 +26,10 @@
           </a>
         </div>
       <% }) %>
+    </div>
     <% } else { %>
-        <h2>No Meals Yet</h2>
+        <p>No Meals Yet</p>
     <% } %>
-  </div>
 
 
 </div>

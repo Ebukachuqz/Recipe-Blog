@@ -82,7 +82,7 @@
 
 
   <!-- Users Posts -->
-<div class="categories">
+<div id="userMeals">
 <h3>Meals By Our Users</h3>
 <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
 
@@ -90,7 +90,7 @@
   <% if(meals != '') { %>
     <% meals.forEach(meal => { %>
       <div class="col text-center category__link">
-        <a href="/user/meal/<%- meal.mealName %>" class="text-deco">
+        <a href="/user/meal/<%- meal._id %>" class="text-deco">
            <div class="category__img shadow">
             <img src="/uploads/<%= meal.image %>" alt="<%= meal.mealName %>">
           </div>

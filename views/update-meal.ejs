@@ -1,5 +1,5 @@
 <div class="px-4 py-5 my-5 text-center">
-  <h1 class="display-5 fw-bold">Submit Your Recipe</h1>
+  <h1 class="display-5 fw-bold">Update Your Recipe</h1>
   <div class="col-lg-6 mx-auto">
     <p class="lead">Share your amazing recipies with thousands of web developers accross the world. Fill our form to get started.</p>
   </div>
@@ -9,27 +9,29 @@
 
   <div class="col-8">
     <%- include('./partials/flash-msg.ejs') %>
-    <form action="/submit-recipe" enctype="multipart/form-data" method="POST">
+    <form action="/user/meal/edit/<%-meal.id%>?_method=PATCH" enctype="multipart/form-data" method="POST">
     
       <div class="row g-3">
 
         <div class="col-12">
           <label for="name" class="form-label">Meal Name</label>
-          <input type="text" name="mealName" id="mealName" class="form-control" required>
+          <input type="text" name="mealName" id="mealName" value="<%=meal.mealName%>" class="form-control" required>
         </div>
         
         <div class="col-12">
           <label for="instructions" class="form-label">Instructions</label>
-          <textarea name="instructions" id="instructions" class="form-control" cols="30" rows="4"></textarea>
+          <textarea name="instructions" id="instructions" class="form-control" cols="30" rows="4"><%=meal.instructions%></textarea>
         </div>
 
         <div class="col-12">
           <label for="name" class="form-label">Ingredients</label><br>
           <small>Example: 1.5kg Chicken</small>
           <div class="ingredientList">
+            <% meal.ingredients.forEach(ingredient => { %>
             <div class="ingredeintDiv mb-1">
-              <input type="text" name="ingredients" class="form-control" required>
+              <input type="text" name="ingredients" value="<%=ingredient%>" class="form-control" required>
             </div>
+            <% }) %>
           </div>
         </div>
 
@@ -39,21 +41,16 @@
 
         <div class="col-12">
           <label for="category">Select Category</label>
-          <input type="text" name="category" id="category" class="form-control">
+          <input type="text" name="category" id="category" value="<%=meal.category%>" class="form-control">
         </div>
 
         <div class="col-12">
           <label for="name" class="form-label">Video Link</label>
-          <input type="text" name="videoLink" id="videoLink" class="form-control">
+          <input type="text" name="videoLink" id="videoLink" value="<%=meal.videoLink%>" class="form-control">
         </div>
 
         <div class="col-12">
-          <label for="image">Meal Image</label>
-          <input type="file" class="form-control" name="image" accept="image/*">
-        </div>
-
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary">Submit Recipe</button>
+          <button type="submit" class="btn btn-primary">Update Recipe</button>
         </div>
 
       </div>

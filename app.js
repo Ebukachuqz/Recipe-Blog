@@ -51,7 +51,6 @@ app.use(function (req, res, next) {
     next();
 })
 
-app.use(methodOverride('_method'))
 
 // DB
 const connectDB = require('./server/db/connectDB')
@@ -61,6 +60,7 @@ const recipeRoutes = require('./server/routes/recipe-routes')
 const categoryRoutes = require('./server/routes/categories')
 const usersAuthRoutes = require("./server/routes/usersAuth");
 
+app.use(methodOverride('_method'))
 app.use('/', recipeRoutes)
 app.use("/", usersAuthRoutes);
 app.use('/categories', categoryRoutes)

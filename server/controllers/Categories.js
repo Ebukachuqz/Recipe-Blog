@@ -1,6 +1,5 @@
 const axios = require("axios");
 const BadRequestError = require("../errors/BadRequest");
-const ServerError = require("../errors/ServerError");
 
 const getAllCategories = async (req, res) => {
   let catReq = await axios.get(
@@ -18,9 +17,6 @@ const getCategory = async (req, res) => {
     let categoryReq = await axios.get(
         "https://www.themealdb.com/api/json/v1/1/categories.php"
     );
-    if (categoryReq.status != 200) {
-        throw new ServerError("Oops! Sorry we have a problem. Try again later")
-    }
     const categories = Object.values(categoryReq.data)[0];
     let catInfo = categories.filter(categori => categori.strCategory == formattedParam);
     if (catInfo == "") {
@@ -32,9 +28,6 @@ const getCategory = async (req, res) => {
     let categoryMeals = await axios.get(
       `https://www.themealdb.com/api/json/v1/1/filter.php?c=${formattedParam}`
     );
-    if (categoryMeals.status != 200) {
-      throw new ServerError("Oops! Sorry we have a problem. Try again later");
-    }
     categoryMeals = categoryMeals.data.meals
 
     res.render('category', {title: `${formattedParam}`, categoryMeals, catInfo});

@@ -18,7 +18,7 @@
     <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
       <% userMeals.forEach(meal => { %>
         <div class="col text-center category__link">
-          <a href="" class="text-deco">
+          <a href="/user/meal/<%- meal._id %>" class="text-deco">
             <div class="category__img shadow" style="height: 150px;">
               <img src="/uploads/<%= meal.image %>" alt="<%= meal.mealName %>">
             </div>

@@ -66,6 +66,51 @@ const submitRecipe = async (req, res) => {
 }
 
 
+const getRandomRecipe = async (req, res) => {
+  let mealReq = await axios.get(
+    `https://www.themealdb.com/api/json/v1/1/random.php`
+  );
+    
+    mealReq = mealReq.data.meals[0]
+    let ingredients = []
+    let quantity = []
+    let strIngredient =[]
+
+    // get ingredients from object
+    Object.entries(mealReq).forEach(([key, value]) => {
+        if (key.startsWith("strIngredient") && value != '' && value != null) {
+            ingredients.push([value])
+        }
+    })
+
+    Object.entries(mealReq).forEach(([key, value]) => {
+      if (key.startsWith("strMeasure") && value != "" && value != null) {
+        quantity.push([value]);
+      }
+    });
+
+    for (let i = 0; i < ingredients.length; i++) {
+        strIngredient.push(quantity[i] + " " + ingredients[i]);
+    }
+
+    let meal = {
+      mealName: mealReq.strMeal,
+      Category: mealReq.strCategory,
+      Area: mealReq.strArea,
+      Instruction: mealReq.strInstructions,
+      MealImage: mealReq.strMealThumb,
+      Youtube: mealReq.strYoutube,
+        Ingredients: strIngredient
+    };
+  res.render('meal', {title: "Meals", meal});
+}
+
+
+const exploreUserMeals = async (req, res) => {
+  const meals = await Meal.find({})
+  res.render('users-meals', {title:'Users meals', meals})
+}
+
 const search = async (req, res) => {
   let searchtext = req.body.searchtext
   // remove whitespace
@@ -151,5 +196,7 @@ module.exports = {
     getUserMeal,
   deleteMeal,
   getUpdatePage,
-    updateMeal
+  updateMeal,
+  exploreUserMeals,
+    getRandomRecipe
 }

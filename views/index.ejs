@@ -12,9 +12,9 @@
 
         <div class="container">
           <div class="carousel-caption text-start">
-            <h1>Example headline.</h1>
-            <p>Some representative placeholder content for the first slide of the carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+            <h1 class="text-dark" style="font-weight: 900;">Get A Random Recipe</h1>
+            <p class="text-dark">Click the button below to get a random recipe from us.</p>
+            <p><a class="btn btn-lg btn-primary" href="/random-recipe">Random Recipe</a></p>
           </div>
         </div>
       </div>
@@ -23,9 +23,9 @@
         <img src="/img/food1.svg" class="d-block w-100" alt="Food 1" height="400">
         <div class="container">
           <div class="carousel-caption">
-            <h1>Another example headline.</h1>
-            <p>Some representative placeholder content for the second slide of the carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+            <h1 class="text-dark" style="font-weight: 900;">Submit Your Own Recipe.</h1>
+            <p class="text-dark">You have a great recipe to share with us? Let's have it.</p>
+            <p><a class="btn btn-lg btn-primary" href="#submit-recipe">Submit Your Recipe</a></p>
           </div>
         </div>
       </div>
@@ -34,9 +34,9 @@
         <img src="/img/food2.svg" class="d-block w-100" alt="Food 1" height="400">
         <div class="container">
           <div class="carousel-caption text-end">
-            <h1>One more for good measure.</h1>
-            <p>Some representative placeholder content for the third slide of this carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+            <h1 class="text-dark" style="font-weight: 900;">Explore Recipes by our Users</h1>
+            <p class="text-dark">See Recipes posted by our users.</p>
+            <p><a class="btn btn-lg btn-primary" href="/user/meals">Explore</a></p>
           </div>
         </div>
       </div>
@@ -57,10 +57,7 @@
 
   <!-- Categories -->
 <section class="pb-4 pt-4" id="categories">
-  <div class="d-flex mb-2 align-items-center">
     <h3>Categories</h3>
-    <a href="/categories" class="ms-auto text-deco">View More</a>
-  </div>
 
   <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
 
@@ -83,7 +80,10 @@
 
   <!-- Users Posts -->
 <div id="userMeals">
-<h3>Meals By Our Users</h3>
+  <div class="d-flex mb-2 align-items-center">
+  <h3>Meals By Our Users</h3>
+  <a href="/user/meals" class="ms-auto text-deco">View More</a>
+  </div>
 <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
 
 
@@ -103,7 +103,7 @@
 
 
 <!-- Submit Receipe -->
-<section class="px-4 py-5 my-5 text-center">
+<section id="submit-recipe" class="px-4 py-5 my-5 text-center">
   <img src="/img/cookbook-bg.png" class="d-block mx-auto" alt="Publish your recipe for FREE today" width="360" height="300" loading="lazy">
   <h1 class="display-5 fw-bold">Publish your recipe for FREE today</h1>
   <div class="col-lg-6 mx-auto">

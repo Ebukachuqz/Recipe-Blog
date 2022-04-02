@@ -107,8 +107,21 @@ const getRandomRecipe = async (req, res) => {
 
 
 const exploreUserMeals = async (req, res) => {
-  const meals = await Meal.find({})
-  res.render('users-meals', {title:'Users meals', meals})
+    const perPage = 12
+    const total = await Meal.countDocuments()
+    const pages = Math.ceil(total / perPage)
+    const pageNumber = req.query.page || 1
+    const startFrom = (pageNumber - 1) * perPage
+ 
+    // get data from mongo DB using pagination
+    const meals = await Meal.find({}).sort({ "id": -1 }).skip(startFrom).limit(perPage)
+ 
+  res.render("users-meals", {
+        title: 'Users meals',
+        "pages": pages,
+        "meals": meals,
+        "currentPage": pageNumber
+    });
 }
 
 const search = async (req, res) => {

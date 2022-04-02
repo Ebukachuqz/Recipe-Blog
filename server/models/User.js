@@ -27,9 +27,21 @@ const UserSchema = new mongoose.Schema({
     
     password: {
         type: String,
-    minlength: [8, 'Password must be at least 8 Characters'],
-  },
-})
+        minlength: [8, 'Password must be at least 8 Characters']
+    },
+    
+    passwordResetToken:{
+        type: String,
+        default: null,
+        required: false
+    },
+
+    tokenExpiryTime: {
+        type: Date,
+        required: false,
+        default: null,
+    },
+  }, { timestamps: true })
 
 UserSchema.pre('save', async function () {
     if (this.password == null) {
@@ -48,6 +60,6 @@ UserSchema.methods.comparePassword = async function (inputPassword) {
     }
     isMatch = await bcrypt.compare(inputPassword, this.password)
     return isMatch
-}
+} 
 
 module.exports = mongoose.model('User', UserSchema)

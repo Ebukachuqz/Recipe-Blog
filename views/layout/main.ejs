@@ -16,7 +16,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/style.css">
     <title><%= typeof title != 'undefined'? `Recipe Blog - ${title}` : "Cooking Recipe Blog" %></title>
-    <link rel="icon" type="image/x-icon" href="/img/logo.svg">
+    <link rel="icon" type="image/x-icon" href="/img/logo.png">
 </head>
 <body>
     <div class="container mainbody">
@@ -27,7 +27,6 @@
                 <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
                 <li class="nav-item"><a href="/#categories" class="nav-link link-dark px-2">Categories</a></li>
                 <li class="nav-item"><a href="/submit-recipe" class="nav-link link-danger px-2">Submit Your Recipe</a></li>
-                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li>
                 <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
             </ul>
             <ul class="nav">
@@ -50,7 +49,7 @@
         <header class="py-3 border-bottom">
             <div class="container d-flex flex-wrap justify-content-center">
             <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-                <img src="/img/logo.svg" width="80" height="52" alt="Receipe Blog Logo">
+                <img src="/img/logo.png" class="mx-1" width="80" height="52" alt="Receipe Blog Logo">
                 <span class="fs-4">RECIPE BLOG</span>
             </a>
             <form action="/search" method="post" class="col-12 col-lg-auto mb-3 mb-lg-0">

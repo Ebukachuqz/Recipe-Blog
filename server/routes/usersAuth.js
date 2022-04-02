@@ -6,7 +6,11 @@ const {
   loginUser,
   logoutUser,
   googleSignin,
-  googleSigninCallback
+  googleSigninCallback,
+  getForgotPasswordPage,
+  postForgotPasswordPage,
+  getPasswordResetPage,
+  resetPassword
 } = require("../controllers/usersAuth");
 const { isLoggedIn } = require("../middleware/authUser");
 const router = express.Router();
@@ -17,5 +21,7 @@ router.route("/register").get(isLoggedIn, getRegisterPage).post(registerUser);
 router.route("/logout").delete(logoutUser);
 router.route('/auth/google').get(googleSignin(passport))
 router.route("/auth/google/callback").get(googleSigninCallback(passport));
+router.route('/forgot-password').get(isLoggedIn, getForgotPasswordPage).post(postForgotPasswordPage)
+router.route("/reset/:token").get(getPasswordResetPage).post(resetPassword)
 
 module.exports = router;

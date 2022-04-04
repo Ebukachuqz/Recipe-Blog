@@ -28,7 +28,7 @@ EMAIL_HOST
 EMAIL_USER
 EMAIL_PASSWORD
 
-port runs on localhost://4000
+The blog runs on localhost://4000
 
 
 ##### Contact me:

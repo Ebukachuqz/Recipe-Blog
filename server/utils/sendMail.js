@@ -12,7 +12,7 @@ const sendMail = async (req, token) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-    console.log("passed transportrt ");
+  
     await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: req.body.email,
@@ -20,7 +20,6 @@ const sendMail = async (req, token) => {
         text: `Follow this link to reset your password. It expires in 15minutes. \n\n
          http://${req.headers.host}/reset/${token}`,
     });
-    console.log('out') 
 }
 
 module.exports = sendMail

@@ -8,7 +8,7 @@
 <div class="row justify-content-center">
 
   <div class="col-8">
-    <%- include('./partials/flash-msg.ejs') %>
+    <%- include('../partials/flash-msg.ejs') %>
     <form action="/user/meal/edit/<%-meal.id%>?_method=PATCH" enctype="multipart/form-data" method="POST">
     
       <div class="row g-3">
@@ -20,7 +20,7 @@
         
         <div class="col-12">
           <label for="instructions" class="form-label">Instructions</label>
-          <textarea name="instructions" id="instructions" class="form-control" cols="30" rows="4"><%=meal.instructions%></textarea>
+          <textarea name="instructions" id="instructions" class="form-control" cols="30" rows="4" required><%=meal.instructions%></textarea>
         </div>
 
         <div class="col-12">
@@ -41,12 +41,12 @@
 
         <div class="col-12">
           <label for="category">Select Category</label>
-          <input type="text" name="category" id="category" value="<%=meal.category%>" class="form-control">
+          <input type="text" name="category" id="category" value="<%=meal.category%>" class="form-control" required>
         </div>
 
         <div class="col-12">
           <label for="name" class="form-label">Video Link</label>
-          <input type="text" name="videoLink" id="videoLink" value="<%=meal.videoLink%>" class="form-control">
+          <input type="url" name="videoLink" id="videoLink" value="<%=meal.videoLink%>" class="form-control">
         </div>
 
         <div class="col-12">

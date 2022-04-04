@@ -10,23 +10,16 @@ const errorHandler = (err, req, res, next) => {
     }
 
     // Handling Mongodb Validation Errors
-    if (err.name === "ValidationError") {
-      customError.message = Object.values(err.errors)
-        .map((item) => item.message)
-        .join(",");
-      customError.statusCode = 400;
-    }
+   
     if (err.code && err.code === 11000) {
       customError.message = `The ${Object.keys(err.keyValue)} already exists, please pick another.`;
       customError.statusCode = 400;
       req.flash('error_flash', customError.message)
       return res.redirect('/register')
     }
-    if (err.name === "CastError") {
-      customError.message = `No item found with id : ${err.value}`;
-      customError.statusCode = 404;
-    }
-    return res.status(customError.statusCode).json({Message: customError.message});
+  
+    if (customError.statusCode == 500) {customError.message = "Oops! Something Went wrong on our side. Try Again Later."}
+    return res.status(customError.statusCode).render('./errors/error', { customError });
 }
 
 

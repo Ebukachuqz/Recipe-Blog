@@ -5,6 +5,7 @@ const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
 const UnauthorizedError = require("../errors/unauthorized");
 const NotFoundError = require("../errors/not-found");
+const notFound = require('../middleware/notFound');
 
 
 const homepage = async (req, res) => {
@@ -18,15 +19,41 @@ const homepage = async (req, res) => {
   res.render('index', { title: 'Homepage', categories, meals })
 }
 
+const about = (req, res) => res.render('about')
+
 
 const dashboard = async (req, res) => {
     const userID = req.user._id
     const user = await User.findById(userID).select('-password')
     const userMeals = await Meal.find({createdBy: user._id})
-    res.render('dashboard', {user, userMeals})
+    res.render('./user/dashboard', {user, userMeals})
 }
 
-const getSubmitRecipe = (req, res) => res.render('submit-recipe')
+
+const search = async (req, res) => {
+  let searchtext = req.body.searchtext;
+  // remove whitespace
+  searchtext = searchtext.trim();
+  searchtext = searchtext.replace(/\s/g, " ");
+
+  // search in db first
+  const dbMeals = await Meal.find({ $text: { $search: searchtext } });
+
+  // search Api
+  let apiMeals = await axios.get(
+    `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchtext}`
+  );
+
+  apiMeals = apiMeals.data.meals;
+
+  res.render("search", { apiMeals, dbMeals, searchtext });
+};
+
+
+
+// Submit Recipe -------
+
+const getSubmitRecipe = (req, res) => res.render('./recipe-forms/submit')
 
 const submitRecipe = async (req, res) => {
   let imageFile
@@ -49,6 +76,13 @@ const submitRecipe = async (req, res) => {
       }
   })
 
+  // Check if other fields were provided
+  const { mealName, ingredients, instructions, category } = req.body
+  if (!mealName.trim() || !ingredients || !instructions.trim() || !category.trim()) {
+    req.flash('error_flash', 'Please provide all fields')
+    return res.redirect("/submit-recipe");
+  }
+
   // save recipe to db
   let meal = {
     mealName: req.body.mealName,
@@ -62,9 +96,85 @@ const submitRecipe = async (req, res) => {
 
   meal = await Meal.create(meal)
   req.flash('success_flash', 'Meal was submitted successfully')
-  return res.redirect('dashboard')
+  return res.redirect('/dashboard')
 }
 
+
+const getUpdatePage = async (req, res) => {
+  const { mealID } = req.params
+  const meal = await Meal.findById(mealID)
+
+  // check if meal exists
+  if (!meal) {
+    throw new NotFoundError('Sorry that meal does not exist.')
+  }
+
+  // check if current user owns the post
+  if (req.user.id != meal.createdBy) {
+    throw new UnauthorizedError('Sorry u do not have access to that post')
+  }
+  
+  res.render('./recipe-forms/update', { title:'Update Meal', meal })
+}
+
+
+const updateRecipe = async (req, res) => {
+  const { mealID } = req.params;
+  const { mealName, instructions, ingredients, category, videoLink } = req.body
+  
+  let meal = await Meal.findById(mealID);
+
+  // check if meal exists
+  if (!meal) {
+    throw new NotFoundError("Sorry we could not find that Recipe")
+  }
+
+  // check if recipe was created by current user
+  if (req.user.id != meal.createdBy) {
+    throw new UnauthorizedError("Forbidden!")
+  }
+
+  // check all fields are provided
+  if (!mealName.trim() || !instructions.trim() || !ingredients || !category.trim()) {
+    req.flash("error_flash", "Please fill all fields");
+    return res.redirect(`/user/meal/edit/${mealID}`);
+  }
+  meal.mealName = mealName
+  meal.instructions = instructions
+  meal.ingredients = ingredients
+  meal.category = category
+  meal.videoLink = videoLink
+
+  // Save update to db
+  meal = await meal.save()
+  req.flash('success_flash', 'Meal was Updated')
+  return res.redirect('/dashboard')
+}
+
+
+const deleteMeal = async (req, res) => {
+  const { mealID } = req.params;
+  let meal = await Meal.findById(mealID);
+
+  // check if meal exists
+  if (!meal) {
+    throw new NotFoundError("Sorry we could not find that Recipe")
+  }
+
+  // check if recipe was created by current user
+  if (req.user.id != meal.createdBy) {
+    throw new UnauthorizedError("Forbidden!");
+  }
+
+  // Delete recipe
+  meal = await Meal.findByIdAndDelete(mealID)
+  req.flash('success_flash', 'Recipe was deleted successfully')
+  res.redirect("/dashboard");
+}
+
+
+
+// Get Recipes -------------
 
 const getRandomRecipe = async (req, res) => {
   let mealReq = await axios.get(
@@ -116,7 +226,7 @@ const exploreUserMeals = async (req, res) => {
     // get data from mongo DB using pagination
     const meals = await Meal.find({}).sort({ "id": -1 }).skip(startFrom).limit(perPage)
  
-  res.render("users-meals", {
+  res.render("./user/users-meals", {
         title: 'Users meals',
         "pages": pages,
         "meals": meals,
@@ -124,84 +234,21 @@ const exploreUserMeals = async (req, res) => {
     });
 }
 
-const search = async (req, res) => {
-  let searchtext = req.body.searchtext
-  // remove whitespace
-  searchtext = searchtext.trim()
-  searchtext = searchtext.replace(/\s/g, " ");
-
-  // search in db first
-  const dbMeals = await Meal.find({$text: { $search: searchtext }})
-
-  // search Api
-  let apiMeals = await axios.get(
-    `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchtext}`
-  );
-
-  apiMeals = apiMeals.data.meals
-
-  res.render('search', { apiMeals, dbMeals, searchtext })
-}
 
 const getUserMeal = async (req, res) => {
   const { mealID } = req.params
   const meal = await Meal.findById(mealID)
   if (!meal) {
-    return res.status(StatusCodes.NOT_FOUND)
+    throw new NotFoundError("Sorry there no meal with that Id")
   }
-
-  res.render('user-meal', {meal})
+  res.render('./user/user-meal', {meal})
 }
 
-
-const deleteMeal = async (req, res) => {
-  const { mealID } = req.params
-  const meal = await Meal.findByIdAndDelete(mealID)
-  res.redirect('/dashboard')
-}
-
-const getUpdatePage = async (req, res) => {
-  const { mealID } = req.params
-  const meal = await Meal.findById(mealID)
-
-  // check if meal exists
-  if (!meal) {
-    throw new NotFoundError('Sorry that meal does not exist.')
-  }
-
-  // check if current user owns the post
-  if (req.user.id != meal.createdBy) {
-    throw new UnauthorizedError('Sorry u do not have access to that post')
-  }
-  
-  res.render('update-meal', { title:'Update Meal', meal })
-}
-
-const updateMeal = async (req, res) => {
-  const { mealID } = req.params;
-  const { mealName, instructions, ingredients, category, videoLink } = req.body
-  
-  let meal = await Meal.findById(mealID);
-  // check all fields are provided
-  if (!mealName || !instructions || !ingredients || !category || !videoLink) {
-    req.flash('error_flash', 'Please fill all fields')
-    return res.redirect(`/user/meal/edit/${mealID}`);
-  }
-  meal.mealName = mealName
-  meal.instructions = instructions
-  meal.ingredients = ingredients
-  meal.category = category
-  meal.videoLink = videoLink
-
-  // Save update to db
-  meal = await meal.save()
-  req.flash('success_flash', 'Meal was Updated')
-  return res.redirect('/dashboard')
-}
 
 
 module.exports = {
     homepage,
+    about,
     dashboard,
     getSubmitRecipe,
     submitRecipe,
@@ -209,7 +256,7 @@ module.exports = {
     getUserMeal,
   deleteMeal,
   getUpdatePage,
-  updateMeal,
+  updateRecipe,
   exploreUserMeals,
     getRandomRecipe
 }

@@ -4,7 +4,7 @@
 <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
       <% apiMeals.forEach(meal => { %>
         <div class="col text-center category__link">
-          <a href="/categories/<%= meal.strCategory %>/<%= meal.idMeal %>/<%= meal.strMeal.replace(/\s/g, '_') %>" class="text-deco">
+          <a href="/categories/<%= meal.strCategory %>/<%= meal.idMeal %>" class="text-deco">
             <div class="category__img shadow" style="height: 150px;">
               <img src="<%= meal.strMealThumb %>" alt="<%= meal.strMeal %>">
             </div>

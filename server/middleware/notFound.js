@@ -1,5 +1,5 @@
 const notFound = (req, res) => {
-    return res.status(404).json({Msg: "Not found"})
+    return res.status(404).render('./errors/404-error')
 }
 
 module.exports = notFound

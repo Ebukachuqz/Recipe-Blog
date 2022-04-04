@@ -22,6 +22,6 @@ router.route("/logout").delete(logoutUser);
 router.route('/auth/google').get(googleSignin(passport))
 router.route("/auth/google/callback").get(googleSigninCallback(passport));
 router.route('/forgot-password').get(isLoggedIn, getForgotPasswordPage).post(postForgotPasswordPage)
-router.route("/reset/:token").get(getPasswordResetPage).post(resetPassword)
+router.route("/reset/:token").get(isLoggedIn, getPasswordResetPage).post(resetPassword)
 
 module.exports = router;

@@ -6,6 +6,15 @@ const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
 
+// DB
+const connectDB = require('./server/db/connectDB')
+
+// Routes
+const recipeRoutes = require('./server/routes/main')
+const categoryRoutes = require('./server/routes/categories')
+const usersAuthRoutes = require("./server/routes/usersAuth");
+
+// middlewares
 const errorHandler = require('./server/middleware/error-handler')
 const notFound = require("./server/middleware/notFound");
 
@@ -52,13 +61,6 @@ app.use(function (req, res, next) {
 })
 
 
-// DB
-const connectDB = require('./server/db/connectDB')
-
-// Routes
-const recipeRoutes = require('./server/routes/recipe-routes')
-const categoryRoutes = require('./server/routes/categories')
-const usersAuthRoutes = require("./server/routes/usersAuth");
 
 app.use(methodOverride('_method'))
 app.use('/', recipeRoutes)

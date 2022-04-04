@@ -3,11 +3,18 @@ const crypto = require('crypto');
 const sendMail = require("../utils/sendMail");
 
 
-const getLoginPage = (req, res) => res.render('login')
+const getLoginPage = (req, res) => res.render('./authforms/login')
 
-const getRegisterPage = (req, res) => res.render("register");
+const getRegisterPage = (req, res) => res.render("./authforms/register");
 
 const registerUser = async (req, res) => {
+    const { name, username, email, password } = req.body
+
+    if (!name.trim() || !username.trim() || !email.trim() || !password) {
+        req.flash('error_flash', 'Please provide all fields')
+        return res.redirect('/register')
+    }
+
     const user = await User.create({ ...req.body });
     req.flash('success_flash', 'You have successfully registered, you can login now.')
     res.redirect('/login')
@@ -40,7 +47,7 @@ const googleSigninCallback = (passport) => {
 
 
 // Password reset
-const getForgotPasswordPage = async (req, res) => res.render('forgot-password')
+const getForgotPasswordPage = async (req, res) => res.render('./authforms/forgot-password')
 
 const postForgotPasswordPage = async (req, res) => {
     const { email } = req.body
@@ -56,19 +63,14 @@ const postForgotPasswordPage = async (req, res) => {
         return res.redirect('/forgot-password')
     }
 
-    console.log('retrieved user')
     const token = crypto.randomBytes(25).toString('hex')
     user.passwordResetToken = token
     user.tokenExpiryTime = Date.now() + 900000 //present time plus 15mis
-    console.log("set token user");
     user = await user.save()
-    console.log("saved user");
-
 
     await sendMail(req, token)
     req.flash('success_flash', 'Password reset link has been sent to your email.')
     return res.redirect('/login')
-
 }
 
 
@@ -84,7 +86,7 @@ const getPasswordResetPage = async (req, res) => {
         return res.redirect('/forgot-password')
     }
 
-    res.render('reset-password', {token})
+    res.render("./authforms/reset-password", { token });
 }
 
 const resetPassword = async (req, res) => {

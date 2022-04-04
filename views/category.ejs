@@ -27,7 +27,7 @@
     <% if(categoryMeals != '') { %>
       <% categoryMeals.forEach(meal => { %>
         <div class="col text-center category__link">
-          <a href="/categories/<%= catInfo.strCategory %>/<%= meal.idMeal %>/<%= meal.strMeal.replace(/\s/g, '_') %>" class="text-deco">
+          <a href="/categories/<%= catInfo.strCategory %>/<%= meal.idMeal %>" class="text-deco">
             <div class="category__img shadow" style="height: 150px;">
               <img src="<%= meal.strMealThumb %>" alt="<%= meal.strMeal %>">
             </div>

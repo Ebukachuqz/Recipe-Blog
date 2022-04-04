@@ -1,12 +1,5 @@
 const axios = require("axios");
-const BadRequestError = require("../errors/BadRequest");
-
-const getAllCategories = async (req, res) => {
-  let catReq = await axios.get(
-    "https://www.themealdb.com/api/json/v1/1/categories.php"
-  );
-  res.json(catReq.data);
-};
+const NotFoundError = require("../errors/not-found");
 
 
 const getCategory = async (req, res) => {
@@ -20,7 +13,7 @@ const getCategory = async (req, res) => {
     const categories = Object.values(categoryReq.data)[0];
     let catInfo = categories.filter(categori => categori.strCategory == formattedParam);
     if (catInfo == "") {
-        throw new BadRequestError(`Sorry we do not have a ${formattedParam} category`)
+        throw new NotFoundError(`Sorry we do not have a ${formattedParam} category`)
     }
     catInfo = catInfo[0]
 
@@ -39,6 +32,10 @@ const getMeal = async (req, res) => {
   let mealReq = await axios.get(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`
   );
+
+  if (mealReq.data.meals == null) {
+      throw new NotFoundError("Recipe Not Found.")
+    }
     
     mealReq = mealReq.data.meals[0]
     let ingredients = []
@@ -75,7 +72,6 @@ const getMeal = async (req, res) => {
 };
 
 module.exports = {
-  getAllCategories,
   getCategory,
   getMeal,
 };

@@ -19,7 +19,7 @@ const homepage = async (req, res) => {
   res.render('index', { title: 'Homepage', categories, meals })
 }
 
-const about = (req, res) => res.render('about')
+const about = (req, res) => res.render('about', {title: "About Me"})
 
 
 const dashboard = async (req, res) => {
@@ -212,7 +212,7 @@ const getRandomRecipe = async (req, res) => {
       Youtube: mealReq.strYoutube,
         Ingredients: strIngredient
     };
-  res.render('meal', {title: "Meals", meal});
+  res.render('meal', {title: "Random", meal});
 }
 
 

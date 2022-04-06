@@ -41,7 +41,9 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(helmet());
+app.use(
+  helmet()
+);
 app.use(cors());
 app.use(xss());
 
@@ -97,8 +99,13 @@ app.use(notFound);
 const port = process.env.PORT || 4000
 
 const startApp = async () => {
+  try {
     await connectDB(process.env.MONGO_URI)
     app.listen(port, ()=>console.log(`App is listening on port ${port}`))
+    
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 startApp()

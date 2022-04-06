@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col-12"><h1><%- meal.mealName %></h1></div>
         <div class="col-12 mb-1">Category: <%- meal.category %></div>
-        <div class="col-12 mb-2">Video: <%- meal.videoLink %></div>
+        <div class="col-12 mb-2">Video:<a href="<%- meal.videoLink %>" target="_blank"><%- meal.videoLink %></a></div>
         <div class="col-12" style="white-space: pre-line;">
           <h4>Cooking Instructions</h4>
           <%- meal.instructions %>
@@ -46,7 +46,7 @@
     </div>
   </div>
 
-   <button type="button" class="btn btn-outline-primary" onclick="fbShare()">Share to Facebook <i class="bi bi-facebook"></i></button>
+   <a class="btn btn-outline-primary" id='facebook-button' onclick="fbShare()" role="button">Share to Facebook  <i class="bi bi-facebook"></i></a>
 <% } else { %>
   <p>No item found.</p>
 <% } %>

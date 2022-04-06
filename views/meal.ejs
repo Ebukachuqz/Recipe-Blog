@@ -33,7 +33,9 @@
       </div>
     </div>
   </div>
-  <button type="button" class="btn btn-outline-primary" onclick="fbShare()">Share to Facebook <i class="bi bi-facebook"></i></button>
+  <% if (title != "Random") { %>
+  <a class="btn btn-outline-primary" id='facebook-button' onclick="fbShare()" role="button">Share to Facebook  <i class="bi bi-facebook"></i></a>
+    <% } %>
 <% } else { %>
   <p>No item found.</p>
 <% } %>

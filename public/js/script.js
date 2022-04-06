@@ -9,7 +9,7 @@ addIngredientsBtn.addEventListener("click", function () {
   ingredientList.appendChild(newIngredients);
 });
 
-
+    
 // Facebook Share function
 function fbShare(){
     let postUrl = encodeURI(document.location.href);

@@ -7,7 +7,7 @@ const initializeGooglePassport = (passport) => {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://127.0.0.1:4000/auth/google/callback",
+        callbackURL: "https://recipe-blog1.herokuapp.com/auth/google/callback" || "http://127.0.0.1:4000/auth/google/callback",
         passReqToCallback: true
     },
         async (request, accessToken, refreshToken, profile, done) => {

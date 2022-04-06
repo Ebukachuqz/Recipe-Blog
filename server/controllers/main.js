@@ -25,7 +25,7 @@ const about = (req, res) => res.render('about', {title: "About Me"})
 const dashboard = async (req, res) => {
     const userID = req.user._id
     const user = await User.findById(userID).select('-password')
-    const userMeals = await Meal.find({createdBy: user._id})
+    const userMeals = await Meal.find({createdBy: user._id}).sort({'updatedAt':-1}) 
     res.render('./user/dashboard', {user, userMeals})
 }
 
@@ -59,15 +59,32 @@ const submitRecipe = async (req, res) => {
   let imageFile
   let uploadPath
   let imageFilename
+  imageFile = req.files.image
+
+  const extensionName = path.extname(imageFile.name); // fetch the file extension
+  const allowedExtension = [".png", ".jpg", ".jpeg"];
+
   // check if any files where upload
   if (!req.files || Object.keys(req.files).length == 0) {
     req.flash('error_flash', 'No image was uploaded')
     return res.redirect('/submit-recipe')
   }
 
+  // check if file is jpg or png or jpeg format
+  if(!allowedExtension.includes(extensionName)){
+    req.flash("error_flash", "File format must be either '.jpg', '.jpeg. or '.png'");
+    return res.redirect("/submit-recipe");
+  }
+
+  
+  // check if file is greater than size limit
+  if (imageFile.truncated) {
+    req.flash("error_flash", "File size should not be more than 2MB");
+    return res.redirect("/submit-recipe");
+  }
+  
   // save file to server and get filename to be saved in db
-  imageFile = req.files.image
-  imageFilename = Date.now() + imageFile.name
+  imageFilename = Date.now() + (imageFile.name).toLowerCase()
   uploadPath = path.resolve('./') + '/public/uploads/' + imageFilename
 
   imageFile.mv(uploadPath, function (err) {
@@ -224,7 +241,7 @@ const exploreUserMeals = async (req, res) => {
     const startFrom = (pageNumber - 1) * perPage
  
     // get data from mongo DB using pagination
-    const meals = await Meal.find({}).sort({ "id": -1 }).skip(startFrom).limit(perPage)
+    const meals = await Meal.find({}).sort({'createdAt':-1}).skip(startFrom).limit(perPage)
  
   res.render("./user/users-meals", {
         title: 'Users meals',
@@ -237,7 +254,7 @@ const exploreUserMeals = async (req, res) => {
 
 const getUserMeal = async (req, res) => {
   const { mealID } = req.params
-  const meal = await Meal.findById(mealID)
+  const meal = await Meal.findById(mealID).sort({'createdAt':-1}) 
   if (!meal) {
     throw new NotFoundError("Sorry there no meal with that Id")
   }

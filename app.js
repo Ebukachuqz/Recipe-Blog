@@ -37,7 +37,7 @@ app.set("trust proxy", 1);
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    max: 1000, // limit each IP to 1000 requests per windowMs
   })
 );
 app.use(express.json());
@@ -51,7 +51,13 @@ app.use(express.static('public'))
 app.use(expressLayouts)
 app.use(express.urlencoded({ extended: true }))
 
-app.use(fileUpload())
+app.use(
+  fileUpload({
+    limits: {
+      fileSize: 2 * 1024 * 1024, //2MB max file(s) size
+    },
+  })
+);
 
 initializePassport(passport)
 initializeGooglePassport(passport)

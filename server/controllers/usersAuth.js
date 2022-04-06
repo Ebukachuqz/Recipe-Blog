@@ -15,6 +15,11 @@ const registerUser = async (req, res) => {
         return res.redirect('/register')
     }
 
+    if (password.length < 8) {
+        req.flash("error_flash", "Password should be a minimum of 8 characters");
+        return res.redirect("/register");
+    }
+
     const user = await User.create({ ...req.body });
     req.flash('success_flash', 'You have successfully registered, you can login now.')
     res.redirect('/login')
@@ -105,6 +110,12 @@ const resetPassword = async (req, res) => {
     if (!password || !password2) {
         req.flash('error_flash', 'Please Fill all fields')
         return res.redirect(`/reset/${token}`)
+    }
+
+    // check password length
+    if (password.length < 8) {
+      req.flash("error_flash", "Password should be a minimum of 8 characters");
+      return res.redirect(`/reset/${token}`);
     }
 
     if (password != password2) {

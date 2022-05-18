@@ -3,7 +3,7 @@
 A recipe blog where users can sign up, login and post their recipes
 Or view and search recipes on the blog thanks to An external API (themealdb.com)
 
-# WEB APP URL HOSTED ON HEROKU
+## WEB APP URL DEPLOYED ON HEROKU
 (https://recipe-blog1.herokuapp.com/)
 
 ### Other features

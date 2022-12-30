@@ -4,7 +4,7 @@ A recipe blog where users can sign up, login and post their recipes
 Or view and search recipes on the blog thanks to An external API (themealdb.com)
 
 ## WEB APP URL DEPLOYED ON HEROKU
-(https://recipe-blog1.herokuapp.com/)
+(https://recipe-blog-400f.onrender.com)
 
 ### Other features
 Pagination,
@@ -39,4 +39,4 @@ The blog runs on localhost://4000
 
 
 ##### Contact me:
-[LinkedIn](https://www.linkedin.com/in/chukwuebuka-chukwudi-29482a236/)
+[LinkedIn](https://www.linkedin.com/in/chukwuebuka-chukwudi)
